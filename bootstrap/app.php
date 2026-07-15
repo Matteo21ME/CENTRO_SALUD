@@ -3,6 +3,8 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
 use App\Http\Middleware\CheckRole;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -18,5 +20,13 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        // Capturar globalmente el error del trigger
+        $exceptions->render(function (QueryException $e, Request $request) {
+            if ($e->getCode() === '45000') {
+                return response()->json([
+                    'message' => 'El consultorio seleccionado se encuentra en MANTENIMIENTO y no puede recibir citas.',
+                    'error' => 'consultorio_mantenimiento'
+                ], 422);
+            }
+        });
     })->create();
