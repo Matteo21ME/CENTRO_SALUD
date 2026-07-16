@@ -32,7 +32,7 @@ class CheckRole
         }
 
         // Desarrollador: sin acceso a historias clinicas
-        if ($roleName === 'Desarrollador' && str_contains($request->path(), 'historias')) {
+        if ($roleName === 'Desarrollador' && str_contains($request->path(), 'citas')) {
             return response()->json(['message' => 'Desarrollador no tiene acceso a historias clinicas.'], 403);
         }
 

@@ -35,7 +35,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     // Escritura y gestion: solo Administrador
-    Route::middleware('role:Administrador')->group(function () {
+    Route::middleware('role:Administrador,Desarrollador')->group(function () {
         Route::post('/pacientes',               [PacienteController::class,    'store']);
         Route::put('/pacientes/{id}',           [PacienteController::class,    'update']);
         Route::delete('/pacientes/{id}',        [PacienteController::class,    'destroy']);
